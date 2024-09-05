@@ -193,7 +193,6 @@ Flop\ Ratio = \frac{Number\ of\ D\ Flip\ Flops}{Total\ Number\ of\ Cells}
 Percentage\ of\ DFF's = Flop\ Ratio * 100
 ```
 
-* All section 1 logs, reports and results can be found in following run folder:
 
 
 
