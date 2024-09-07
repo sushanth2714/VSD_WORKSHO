@@ -257,11 +257,13 @@ magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs
 lef read ../../tmp/merged.lef def read picorv32a.placement.def &
 ```
 * Placement DEF Loaded in Magic
+  
   The placement DEF file has been successfully loaded into Magic, showing the placement of standard cells and other components.
 
 ![placement](https://github.com/user-attachments/assets/a4c9133c-538f-4996-981e-3a7778b2bae6)
 
 * Legally Placed Standard Cells
+  
   This screenshot shows the standard cells placed legally according to the design rules, ensuring a functional and optimized layout.
 
 ![legally placed](https://github.com/user-attachments/assets/d9480e1d-1893-4a27-9a3c-50e492b92d4b)
