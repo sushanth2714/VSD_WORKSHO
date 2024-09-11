@@ -90,7 +90,7 @@ Flop\ Ratio = \frac{1613}{14876} = 0.108429685
 Percentage\ of\ DFF's = 0.108429685 * 100 = 10.84296854\ \%
 ```
 
-## Section 2 - Good Floorplan vs Bad Floorplan and Introduction to Library Cell (06/09/2024 - 07/09/2024)
+## Section 2 - Good Floorplan vs Bad Floorplan and Introduction to Library Cell (06/09/2024 - 08/09/2024)
 
 ### Implementation
 Objectives: 
@@ -278,11 +278,105 @@ exit
 exit
 ```
 
+## Section 3 - Design library cell using Magic Layout and ngspice characterization (09/09/2024 - 11/09/2024)
+
+### Implementation
+
+Objectives: 
+1.Clone the GitHub repository for the Standard Cell Design and Characterization using the OpenLANE flow: [Standard cell design](https://github.com/nickson-jose/vsdstdcelldesign).
+2.Open the custom inverter layout in Magic for inspection and exploration.
+3.Perform SPICE extraction of the inverter design using Magic.
+4.Modify the SPICE model file for further analysis and simulation.
+5.Conduct post-layout simulations using ngspice.
+6.Identify and resolve any issues in the Design Rule Check (DRC) section of the existing Magic technology file for the SkyWater process.
+
+#### Task 1: Cloning Custom Inverter Standard Cell Design from GitHub Repository
+1.Navigate to the OpenLANE working directory:
+
+```bash
+cd Desktop/work/tools/openlane_working_dir/openlane
+```
+  2.Clone the custom inverter design repository
+  ```bash
+git clone https://github.com/nickson-jose/vsdstdcelldesign
+```
+3.Move into the repository's directory
+```bash
+cd vsdstdcelldesign
+```
+4.Copy the Magic tech file for easier access
+```bash
+cp ~/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech .
+```
+5.Verify the contents of the directory
+```bash
+ls
+```
+6.Open the custom inverter layout in Magic
+```bash
+magic -T sky130A.tech sky130_inv.mag &
+```
+
+Ensure that you have successfully cloned the repository and opened the custom inverter layout using Magic for further exploration. The screenshot of the commands run is also shown below.
+
+* Screenshot:
+
+  ![clone](https://github.com/user-attachments/assets/02aeb5f5-2dd4-4e2c-b825-4f4455d1e5f8)
+
+#### Task 2: Open the custom inverter layout in Magic for inspection and exploration.
+
+After opening the custom inverter layout into Magic, the design exploration can be conducted by identifying critical components and connections, including NMOS, PMOS, and various signal paths.
+* Steps:
+  1.Load the layout in Magic:
+  ```bash
+  magic -T sky130A.tech sky130_inv.mag &
+  ```
+  2.NMOS and PMOS Identified:
+  * Both NMOS and PMOS transistors were identified within the layout. Screenshots of these are provided below.
+
+    ![nmos](https://github.com/user-attachments/assets/4729a844-f352-4b25-9b40-79412e2609ed)
+
+    ![pmos](https://github.com/user-attachments/assets/8ede3280-0270-44a7-9073-e8906eacd4cc)
+
+  3.Verification of Output (Y) Connectivity to PMOS and NMOS Drain:
+  * The connectivity from the output Y to the PMOS and NMOS drains was checked and verified.
+
+    ![y output](https://github.com/user-attachments/assets/a8975c27-de7a-4a42-8a24-214b5c31e9ac)
+    
+
+  4.PMOS Source Connectivity to VDD (VPWR) Verified:
+  
+  * The source of the PMOS was verified to be correctly connected to VDD (VPWR).
+
+   ![vdd](https://github.com/user-attachments/assets/697efc0c-addb-4024-8fac-5cbb75b7f856)
+
+
+  5.NMOS Source Connectivity to VSS (VGND) Verified:
+
+  * The source of the NMOS was verified to be connected to VSS (VGND).
+ 
+   ![vss](https://github.com/user-attachments/assets/a0d858c7-6cff-4bc8-a316-a5451b4fa543)
+
+
+  6.Testing DRC Errors:
+
+  * A portion of the layout was deliberately deleted to trigger a DRC (Design Rule Check) error, and the tool successfully flagged the error.
+ 
+    ![drc error](https://github.com/user-attachments/assets/61913715-91cd-493a-86af-83400e8f28da)
+    
+#### Task 3: Perform SPICE extraction of the inverter design using Magic.
+
+    
+
+
+    
 
 
 
 
 
+
+  
 
 
 
