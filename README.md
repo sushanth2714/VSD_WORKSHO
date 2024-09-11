@@ -366,6 +366,38 @@ After opening the custom inverter layout into Magic, the design exploration can 
     
 #### Task 3: Perform SPICE extraction of the inverter design using Magic.
 
+To extract the SPICE netlist from the custom inverter layout in Magic, follow these steps in the tkcon window:
+
+Commands for SPICE Extraction:
+1.Check the current directory
+```bash
+pwd
+```
+2.Extract the layout into .ext format
+```bash
+extract all
+```
+3.Enable parasitic extraction (capacitance and resistance thresholds set to 0 for full extraction)
+```bash
+ext2spice cthresh 0 rthresh 0
+```
+4.Convert .ext file to SPICE format
+```bash
+ext2spice
+```
+Screenshots:
+
+1.TKcon window after running extraction commands:
+
+![extract spice](https://github.com/user-attachments/assets/5d43cd61-3f33-4392-8e5c-44c1d97831b7)
+
+2.Generated SPICE file:
+
+![extract spice file](https://github.com/user-attachments/assets/a3d6cf78-e031-40e1-ac32-f60bbe901a19)
+
+
+
+
     
 
 
