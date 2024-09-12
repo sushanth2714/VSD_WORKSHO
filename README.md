@@ -1,4 +1,4 @@
-# VSD_WORKSHOP
+![rise20](https://github.com/user-attachments/assets/926c6237-27fa-44a7-8bcb-fd35c675c4dd)# VSD_WORKSHOP
 
 
 > 2 Week digital VLSI SoC design and planning workshop with complete RTL2GDSII flow organised by VSD in collaboration with NASSCOM.
@@ -414,7 +414,8 @@ Screenshots:
 
 * Screenshot: Edited SPICE file
 
-![edited](https://github.com/user-attachments/assets/81138c05-ca48-40be-8605-e642d36ada7c)
+![edited](https://github.com/user-attachments/assets/3dbad5c8-479f-4b1a-b2d5-d013a64f11ee)
+
 
 
 
@@ -436,21 +437,23 @@ Screenshots:
 
 * Screenshot: Running the ngspice simulation
 
-  ![ngspice](https://github.com/user-attachments/assets/530d5e5e-8558-482f-895b-0455e4c291f8)
+  ![ngspice](https://github.com/user-attachments/assets/39f51feb-87d4-415d-9066-6a4c0acaf380)
 
-  ![plot](https://github.com/user-attachments/assets/ae533321-9538-400a-af5b-7954e7c6bf28)
+  ![plot](https://github.com/user-attachments/assets/9a94cebf-3782-4d00-b258-f0d61adccff0)
+
 
   
 * Screenshot: Generated plot
 
-  ![graph1](https://github.com/user-attachments/assets/1d5d582a-b6cc-49f7-832d-41b69267cc13)
+  
+![graph1](https://github.com/user-attachments/assets/251a5848-7ff7-4f92-a59f-1f37543349da)
 
 
 #### Task 6:  Rise and Fall Transition Time Calculations
 
 1. Rise Transition Time Calculation
 
-   ```math
+```math
 Rise\ transition\ time = Time\ taken\ for\ output\ to\ rise\ to\ 80\% - Time\ taken\ for\ output\ to\ rise\ to\ 20\%
 ```
 ```math
@@ -460,12 +463,49 @@ Rise\ transition\ time = Time\ taken\ for\ output\ to\ rise\ to\ 80\% - Time\ ta
 80\%\ of\ output = 2.64\ V
 ```
 
+* Screenshots: 20% Output
+
+![rise20](https://github.com/user-attachments/assets/147270b3-d802-41de-906f-7db21ae49145)
+
+![rise20terminal](https://github.com/user-attachments/assets/a8a648db-6822-45d5-ac5b-85faaf55754a)
+
+
+* Screenshots: 80% Output
+
+![rise80](https://github.com/user-attachments/assets/4a07a6d0-1b12-4ba8-a543-6bd3131ed0c3)
+
+![rise80terminal](https://github.com/user-attachments/assets/4bad4fac-da6b-4d44-be33-ea3a74832747)
 
 
 
+```math
+Rise\ transition\ time = 2.246 - 2.182 = 0.064\ ns = 64\ ps
+```
+
+2. Fall Transition Time Calculation
+
+```math
+Fall\ transition\ time = Time\ taken\ for\ output\ to\ fall\ to\ 20\% - Time\ taken\ for\ output\ to\ fall\ to\ 80\%
+```
+```math
+20\%\ of\ output = 660\ mV
+```
+```math
+80\%\ of\ output = 2.64\ V
+```
+
+* Screenshots: 20% Output
+
+
+
+
+
+* Screenshots: 80% Output
   
 
-
+```math
+Fall\ transition\ time = 4.0955 - 4.0536 = 0.0419\ ns = 41.9\ ps
+```
 
     
 
