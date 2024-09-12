@@ -288,6 +288,8 @@ Objectives:
 3.Perform SPICE extraction of the inverter design using Magic.
 4.Modify the SPICE model file for further analysis and simulation.
 5.Conduct post-layout simulations using ngspice.
+6.Rise and Fall Transition Time Calculations.
+7.Cell Delay Calculations.
 6.Identify and resolve any issues in the Design Rule Check (DRC) section of the existing Magic technology file for the SkyWater process.
 
 #### Task 1: Cloning Custom Inverter Standard Cell Design from GitHub Repository
@@ -395,6 +397,73 @@ Screenshots:
 
 ![extract spice file](https://github.com/user-attachments/assets/a3d6cf78-e031-40e1-ac32-f60bbe901a19)
 
+
+#### Task 4: Modify the SPICE model file for further analysis and simulation.
+* Measuring Unit Distance in Layout Grid
+
+  Before editing the SPICE model file, ensure the grid spacing and unit distance in the layout are accurate. This will help in verifying and adjusting the extracted device dimensions.
+
+  Screenshot: Measuring unit distance in layout grid
+
+  ![box](https://github.com/user-attachments/assets/80ee2f3f-30f6-401b-9bd0-94a9e2b4c215)
+
+
+* Final Edited SPICE File for ngspice Simulation
+
+  After extracting the SPICE file, review and edit it as needed for ngspice simulation. Ensure that the netlist includes accurate connections and the appropriate device models for the Skywater 130nm process.
+
+* Screenshot: Edited SPICE file
+
+![edited](https://github.com/user-attachments/assets/81138c05-ca48-40be-8605-e642d36ada7c)
+
+
+
+#### Task 5: Conduct post-layout simulations using ngspice.
+
+* Running the SPICE Simulation
+
+  To run a post-layout simulation in ngspice, use the following commands to load the SPICE file and plot the output.
+
+  1.Load the SPICE file into ngspice
+  ```bash
+  ngspice sky130_inv.spice
+  ```
+  2.Plot output y vs time a (input)
+  ```bash
+  plot y vs time a
+  ```
+
+
+* Screenshot: Running the ngspice simulation
+
+  ![ngspice](https://github.com/user-attachments/assets/530d5e5e-8558-482f-895b-0455e4c291f8)
+
+  ![plot](https://github.com/user-attachments/assets/ae533321-9538-400a-af5b-7954e7c6bf28)
+
+  
+* Screenshot: Generated plot
+
+  ![graph1](https://github.com/user-attachments/assets/1d5d582a-b6cc-49f7-832d-41b69267cc13)
+
+
+#### Task 6:  Rise and Fall Transition Time Calculations
+
+1. Rise Transition Time Calculation
+
+   ```math
+Rise\ transition\ time = Time\ taken\ for\ output\ to\ rise\ to\ 80\% - Time\ taken\ for\ output\ to\ rise\ to\ 20\%
+```
+```math
+20\%\ of\ output = 660\ mV
+```
+```math
+80\%\ of\ output = 2.64\ V
+```
+
+
+
+
+  
 
 
 
