@@ -15,7 +15,7 @@ Objectives:
 2. Calculate the flop ratio based on synthesis results.
 
 
-#### Task 1: Running 'picorv32a' Design Synthesis using OpenLANE
+### Task 1: Running 'picorv32a' Design Synthesis using OpenLANE
 
 Steps to perform synthesis:
   1.Change to the OpenLANE flow directory:
@@ -61,7 +61,7 @@ Below are screenshots showcasing the execution of synthesis:
 
 ![day 1 synthesis](https://github.com/user-attachments/assets/b079e940-8e0a-4421-94f3-f5c791d9a4a5)
 
-#### Task 2: Calculating Flop Ratio
+### Task 2: Calculating Flop Ratio
 We calculate the Flop Ratio and the percentage of D Flip-Flops (DFF) using the synthesis statistics report.
 Formulae:
 
@@ -95,12 +95,16 @@ Percentage\ of\ DFF's = 0.108429685 * 100 = 10.84296854\ \%
 ### Implementation
 Objectives: 
 1.Run 'picorv32a' Design Floorplan Using OpenLANE.
+
 2.Calculate Die Area in Microns.
+
 3.Load Floorplan DEF in Magic Tool.
+
 4.Run Congestion-Aware Placement.
+
 5.Load Placement DEF in Magic Tool.
 
-#### Task 1: Run 'picorv32a' Design Floorplan Using OpenLANE.
+### Task 1: Run 'picorv32a' Design Floorplan Using OpenLANE.
 
 Steps to perform Floorplan:
   1.Change to the OpenLANE flow directory:
@@ -178,7 +182,7 @@ Die\ height\ in\ microns = \frac{671405}{1000} = 671.405\ Microns
 Area\ of\ die\ in\ microns = 660.685 * 671.405 = 443587.212425\ Square\ Microns
 ```
 
-#### Task 3: Load Floorplan DEF in Magic Tool.
+### Task 3: Load Floorplan DEF in Magic Tool.
 
 Commands to Load Floorplan DEF in Magic:
 1.Change directory to path containing generated floorplan def
@@ -231,7 +235,7 @@ This image shows the standard cells that are currently unplaced, located at the 
 
 ![standerd cells](https://github.com/user-attachments/assets/aa16dcb8-a9be-4af8-9be8-8fbacb5696d4)
 
-#### Task 4:Run Congestion-Aware Placement.
+### Task 4:Run Congestion-Aware Placement.
 
 Command to run placement
 ```bash
@@ -244,7 +248,7 @@ run_placement
   
 ![placement2](https://github.com/user-attachments/assets/b3d78910-faa9-4311-92d7-0fed726dc86d)
 
-#### Task 5: Load Placement DEF in Magic Tool.
+### Task 5: Load Placement DEF in Magic Tool.
 To load the generated placement DEF file in the Magic tool, use the following commands in a separate terminal:
 Commands to Load Placement DEF in Magic
 1.Navigate to the directory containing the placement DEF file:
@@ -298,9 +302,9 @@ Objectives:
 
 7.Cell Delay Calculations.
 
-6.Identify and resolve any issues in the Design Rule Check (DRC) section of the existing Magic technology file for the SkyWater process.
+8.Fixing DRC Violations in the Sky130A Magic Tech File.
 
-#### Task 1: Cloning Custom Inverter Standard Cell Design from GitHub Repository
+### Task 1: Cloning Custom Inverter Standard Cell Design from GitHub Repository
 1.Navigate to the OpenLANE working directory:
 
 ```bash
@@ -333,7 +337,7 @@ Ensure that you have successfully cloned the repository and opened the custom in
 
   ![clone](https://github.com/user-attachments/assets/02aeb5f5-2dd4-4e2c-b825-4f4455d1e5f8)
 
-#### Task 2: Open the custom inverter layout in Magic for inspection and exploration.
+### Task 2: Open the custom inverter layout in Magic for inspection and exploration.
 
 After opening the custom inverter layout into Magic, the design exploration can be conducted by identifying critical components and connections, including NMOS, PMOS, and various signal paths.
 * Steps:
@@ -374,7 +378,7 @@ After opening the custom inverter layout into Magic, the design exploration can 
  
     ![drc error](https://github.com/user-attachments/assets/61913715-91cd-493a-86af-83400e8f28da)
     
-#### Task 3: Perform SPICE extraction of the inverter design using Magic.
+### Task 3: Perform SPICE extraction of the inverter design using Magic.
 
 To extract the SPICE netlist from the custom inverter layout in Magic, follow these steps in the tkcon window:
 
@@ -406,7 +410,7 @@ Screenshots:
 ![extract spice file](https://github.com/user-attachments/assets/a3d6cf78-e031-40e1-ac32-f60bbe901a19)
 
 
-#### Task 4: Modify the SPICE model file for further analysis and simulation.
+### Task 4: Modify the SPICE model file for further analysis and simulation.
 * Measuring Unit Distance in Layout Grid
 
   Before editing the SPICE model file, ensure the grid spacing and unit distance in the layout are accurate. This will help in verifying and adjusting the extracted device dimensions.
@@ -427,7 +431,7 @@ Screenshots:
 
 
 
-#### Task 5: Conduct post-layout simulations using ngspice.
+### Task 5: Conduct post-layout simulations using ngspice.
 
 * Running the SPICE Simulation
 
@@ -461,7 +465,7 @@ Screenshots:
 
 
 
-#### Task 6:  Rise and Fall Transition Time Calculations:
+### Task 6:  Rise and Fall Transition Time Calculations:
 
 1. Rise Transition Time Calculation:
 
@@ -528,7 +532,7 @@ Fall\ transition\ time = Time\ taken\ for\ output\ to\ fall\ to\ 20\% - Time\ ta
 Fall\ transition\ time = 4.09507 - 4.05269 = 0.04238\ ns = 42.38\ ps
 ```
 
-#### Task 7:  Cell Delay Calculations:
+### Task 7:  Cell Delay Calculations:
 
 1.Rise Cell Delay Calculation:
 
@@ -571,6 +575,10 @@ Fall\ Cell\ Delay = Time\ taken\ for\ output\ to\ fall\ to\ 50\% - Time\ taken\ 
 ```math
 Fall\ Cell\ Delay = 4.07765 - 4.05 = 0.02765\ ns = 27.65\ ps
 ```
+
+### Task 8: Fixing DRC Violations in the Sky130A Magic Tech File
+
+
 
 
 
