@@ -437,21 +437,25 @@ Screenshots:
 
 * Screenshot: Running the ngspice simulation
 
-  ![ngspice](https://github.com/user-attachments/assets/39f51feb-87d4-415d-9066-6a4c0acaf380)
 
-  ![plot](https://github.com/user-attachments/assets/9a94cebf-3782-4d00-b258-f0d61adccff0)
+  
+![ngspice](https://github.com/user-attachments/assets/ccdd6206-2f49-4069-a8be-29174eebdbe7)
+
+
+![plot](https://github.com/user-attachments/assets/6abc4893-da8c-4f58-b3ff-3aba8245c31d)
 
 
   
 * Screenshot: Generated plot
 
   
-![graph1](https://github.com/user-attachments/assets/251a5848-7ff7-4f92-a59f-1f37543349da)
+![graph1](https://github.com/user-attachments/assets/56d9f6d4-bf24-4601-9dd2-438c91795873)
 
 
-#### Task 6:  Rise and Fall Transition Time Calculations
 
-1. Rise Transition Time Calculation
+#### Task 6:  Rise and Fall Transition Time Calculations:
+
+1. Rise Transition Time Calculation:
 
 ```math
 Rise\ transition\ time = Time\ taken\ for\ output\ to\ rise\ to\ 80\% - Time\ taken\ for\ output\ to\ rise\ to\ 20\%
@@ -465,24 +469,27 @@ Rise\ transition\ time = Time\ taken\ for\ output\ to\ rise\ to\ 80\% - Time\ ta
 
 * Screenshots: 20% Output
 
-![rise20](https://github.com/user-attachments/assets/147270b3-d802-41de-906f-7db21ae49145)
+![rise20](https://github.com/user-attachments/assets/d2fa1c0b-ddcc-497b-b422-61307910e4c1)
 
-![rise20terminal](https://github.com/user-attachments/assets/a8a648db-6822-45d5-ac5b-85faaf55754a)
+![rise20terminal](https://github.com/user-attachments/assets/a4c0d720-2e34-4720-8c4e-5c0065610020)
+
 
 
 * Screenshots: 80% Output
 
-![rise80](https://github.com/user-attachments/assets/4a07a6d0-1b12-4ba8-a543-6bd3131ed0c3)
 
-![rise80terminal](https://github.com/user-attachments/assets/4bad4fac-da6b-4d44-be33-ea3a74832747)
+![rise80](https://github.com/user-attachments/assets/c9b1d67d-5d08-4c98-8afe-9323ec508834)
+
+![rise80terminal](https://github.com/user-attachments/assets/a66d15b6-44d9-407c-9d74-3f967caaccb6)
+
 
 
 
 ```math
-Rise\ transition\ time = 2.246 - 2.182 = 0.064\ ns = 64\ ps
+Rise\ transition\ time = 2.24592 - 2.18213 = 0.06376\ ns = 63.76\ ps
 ```
 
-2. Fall Transition Time Calculation
+2. Fall Transition Time Calculation:
 
 ```math
 Fall\ transition\ time = Time\ taken\ for\ output\ to\ fall\ to\ 20\% - Time\ taken\ for\ output\ to\ fall\ to\ 80\%
@@ -496,29 +503,66 @@ Fall\ transition\ time = Time\ taken\ for\ output\ to\ fall\ to\ 20\% - Time\ ta
 
 * Screenshots: 20% Output
 
+![fall20](https://github.com/user-attachments/assets/b0f21670-69b3-4a2b-a203-86ce7afb4c5c)
 
+![fall20terminal](https://github.com/user-attachments/assets/c51a5ea2-7160-470c-b63a-053d70842746)
 
 
 
 * Screenshots: 80% Output
-  
+
+  ![fall80](https://github.com/user-attachments/assets/f117d411-271d-4aad-8d9b-ce4d0443bd72)
+
+  ![fall80terminal](https://github.com/user-attachments/assets/54fe2768-a796-42d5-80b8-ac23719939b9)
+
 
 ```math
-Fall\ transition\ time = 4.0955 - 4.0536 = 0.0419\ ns = 41.9\ ps
+Fall\ transition\ time = 4.09507 - 4.05269 = 0.04238\ ns = 42.38\ ps
 ```
 
+#### Task 7:  Cell Delay Calculations:
+
+1.Rise Cell Delay Calculation:
+
+```math
+Rise\ Cell\ Delay = Time\ taken\ for\ output\ to\ rise\ to\ 50\% - Time\ taken\ for\ input\ to\ fall\ to\ 50\%
+```
+```math
+50\%\ of\ 3.3\ V = 1.65\ V
+```
+* Screenshots: 50% Output
+
+![rise50](https://github.com/user-attachments/assets/90eed95b-f9c6-4296-8e93-fcb8cc489ced)
+
+![rise50terminal](https://github.com/user-attachments/assets/83612071-ac89-4a53-a43a-ddfde1f1bc6c)
+
+![rise50terminal2](https://github.com/user-attachments/assets/c7bb50c6-fd17-4655-b179-251eadf4e55e)
+
+   
+
+```math
+Rise\ Cell\ Delay = 2.21109 - 2.15 = 0.06109\ ns = 61.09\ ps
+```
+
+2. Fall Cell Delay Calculation:
     
+```math
+Fall\ Cell\ Delay = Time\ taken\ for\ output\ to\ fall\ to\ 50\% - Time\ taken\ for\ input\ to\ rise\ to\ 50\%
+```
+```math
+50\%\ of\ 3.3\ V = 1.65\ V
+```
 
+* Screenshots: 50% Output
 
-    
+![fall50](https://github.com/user-attachments/assets/5a5b633c-a38d-4726-9241-39533c476307)
 
-
-
-
-
+![fall50terminal](https://github.com/user-attachments/assets/4a83f82d-4c64-447e-874d-351c5710c390)
 
   
-
+```math
+Fall\ Cell\ Delay = 4.07765 - 4.05 = 0.02765\ ns = 27.65\ ps
+```
 
 
 
