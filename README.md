@@ -283,13 +283,21 @@ exit
 ### Implementation
 
 Objectives: 
+
 1.Clone the GitHub repository for the Standard Cell Design and Characterization using the OpenLANE flow: [Standard cell design](https://github.com/nickson-jose/vsdstdcelldesign).
+
 2.Open the custom inverter layout in Magic for inspection and exploration.
+
 3.Perform SPICE extraction of the inverter design using Magic.
+
 4.Modify the SPICE model file for further analysis and simulation.
+
 5.Conduct post-layout simulations using ngspice.
+
 6.Rise and Fall Transition Time Calculations.
+
 7.Cell Delay Calculations.
+
 6.Identify and resolve any issues in the Design Rule Check (DRC) section of the existing Magic technology file for the SkyWater process.
 
 #### Task 1: Cloning Custom Inverter Standard Cell Design from GitHub Repository
