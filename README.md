@@ -1,4 +1,4 @@
-![rise20](https://github.com/user-attachments/assets/926c6237-27fa-44a7-8bcb-fd35c675c4dd)# VSD_WORKSHOP
+
 
 
 > 2 Week digital VLSI SoC design and planning workshop with complete RTL2GDSII flow organised by VSD in collaboration with NASSCOM.
