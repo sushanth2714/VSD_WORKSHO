@@ -303,7 +303,7 @@ Objectives:
 
 7.Cell Delay Calculations.
 
-8.Fixing DRC Violations in the Sky130A Magic Tech File.
+8.Correcting DRC Errors in SkyWater SKY130 Process Using Magic VLSI Layout Tool.
 
 ### Task 1: Cloning Custom Inverter Standard Cell Design from GitHub Repository
 1.Navigate to the OpenLANE working directory:
@@ -577,7 +577,53 @@ Fall\ Cell\ Delay = Time\ taken\ for\ output\ to\ fall\ to\ 50\% - Time\ taken\ 
 Fall\ Cell\ Delay = 4.07765 - 4.05 = 0.02765\ ns = 27.65\ ps
 ```
 
-### Task 8: Fixing DRC Violations in the Sky130A Magic Tech File
+### Task 8: Correcting DRC Errors in SkyWater SKY130 Process Using Magic VLSI Layout Tool
+
+* Steps to Download and View the Corrupted SkyWater Process Magic Tech File
+
+  1. Change to the Home Directory:
+
+     ```bash
+     cd
+     ```
+  2. Download the Lab Files:
+
+     ```bash
+     wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz\
+     ```
+  3. Extract the Compressed Files:
+
+     ```bash
+     tar xfz drc_tests.tgz
+     ```
+  4. Navigate to the Lab Directory:
+
+     ```bash
+     cd drc_tests
+     ```
+  5. List the Contents of the Directory:
+     ```bash
+     ls -al
+     ```
+  6. View the .magicrc File:
+     ```bash
+     gvim .magicrc
+     ```
+  7. Open Magic with Enhanced Graphics:
+
+     ```bash
+     magic -d XR &
+     ```
+
+  * Screenshots of Commands Executed:
+
+    ![magic_commands](https://github.com/user-attachments/assets/48eef415-2a62-4459-818a-fa5ccbeb127f)
+
+  * Viewing the .magicrc File:
+
+    ![magicfile](https://github.com/user-attachments/assets/b597ceb6-0454-4926-ac93-76c14bd5c205)
+
+
 
 
 
