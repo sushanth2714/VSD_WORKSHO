@@ -4,7 +4,7 @@
 
 > 2 Week digital VLSI SoC design and planning workshop with complete RTL2GDSII flow organised by VSD in collaboration with NASSCOM.
 >
-## Section 1 - Inception of open-source EDA, OpenLANE and Sky130 PDK (04/09/2024 - 05/09/2024)
+## Section 1 - Inception of open-source EDA, OpenLANE and Sky130 PDK 
 
 
 
@@ -91,7 +91,7 @@ Flop\ Ratio = \frac{1613}{14876} = 0.108429685
 Percentage\ of\ DFF's = 0.108429685 * 100 = 10.84296854\ \%
 ```
 
-## Section 2 - Good Floorplan vs Bad Floorplan and Introduction to Library Cell (06/09/2024 - 08/09/2024)
+## Section 2 - Good Floorplan vs Bad Floorplan and Introduction to Library Cell 
 
 ### Implementation
 Objectives: 
@@ -283,7 +283,7 @@ exit
 exit
 ```
 
-## Section 3 - Design library cell using Magic Layout and ngspice characterization (09/09/2024 - 11/09/2024)
+## Section 3 - Design library cell using Magic Layout and ngspice characterization 
 
 ### Implementation
 
@@ -579,7 +579,9 @@ Fall\ Cell\ Delay = 4.07765 - 4.05 = 0.02765\ ns = 27.65\ ps
 
 ### Task 8: Correcting DRC Errors in SkyWater SKY130 Process Using Magic VLSI Layout Tool
 
-* Steps to Download and View the Corrupted SkyWater Process Magic Tech File
+1.Download and Extract the DRC Test Files
+
+Start by downloading the required test files and extracting them in your home directory.
 
   1. Change to the Home Directory:
 
@@ -605,23 +607,202 @@ Fall\ Cell\ Delay = 4.07765 - 4.05 = 0.02765\ ns = 27.65\ ps
      ```bash
      ls -al
      ```
-  6. View the .magicrc File:
-     ```bash
-     gvim .magicrc
-     ```
-  7. Open Magic with Enhanced Graphics:
-
-     ```bash
-     magic -d XR &
-     ```
+  
+  
 
   * Screenshots of Commands Executed:
 
     ![magic_commands](https://github.com/user-attachments/assets/48eef415-2a62-4459-818a-fa5ccbeb127f)
 
+2.View the .magicrc Configuration File
+
+Before proceeding, it’s a good idea to inspect the .magicrc file to ensure that Magic is configured properly.
+
   * Viewing the .magicrc File:
 
+    
+     ```bash
+     # Open the .magicrc file in a text editor
+     gvim .magicrc
+     ```
+
     ![magicfile](https://github.com/user-attachments/assets/b597ceb6-0454-4926-ac93-76c14bd5c205)
+
+3.Open the Magic Tool with the Updated Tech File
+
+Start Magic in a better graphics mode to view the design and identify DRC violations.
+
+```bash
+# Open Magic in XR mode
+magic -d XR &
+```
+
+4.Fixing Incorrectly Implemented poly.9 Rule
+
+The poly.9 rule defines a minimum spacing rule that was not properly enforced. We will update the DRC rule and verify the correction.
+
+Screenshot of poly rules:
+
+
+![poly 9 rule](https://github.com/user-attachments/assets/a692e665-8d3d-4d9f-8c06-030f2a905698)
+
+Problem: No DRC violation occurred for spacing < 0.48u as required by poly.9.
+
+
+![poly 9 error](https://github.com/user-attachments/assets/c653abde-0a3c-4055-ad20-37815b3a2537)
+
+Solution: Update the Sky130 DRC tech file.
+
+Inserting New Commands into sky130A.tech File:
+
+open sky130A.tech file
+
+```bash
+gvim sky130A.tech
+```
+
+Screenshot after Inserting new commands into sky130A.tech file
+
+
+![edited poly 9 1](https://github.com/user-attachments/assets/0b9d6289-2db0-49aa-a08e-54903e47e76d)
+
+
+![edited poly 9 2](https://github.com/user-attachments/assets/97dc33f5-92e3-4d2c-b8e9-23e163678f42)
+
+Commands to Run:
+
+```tcl
+# Load the updated tech file
+tech load sky130A.tech
+```
+```tcl
+# Run DRC check
+drc check
+
+```
+```tcl
+# Select region with errors and view messages
+drc why
+```
+
+Post-fix Screenshot:
+
+![poly 9 corrected](https://github.com/user-attachments/assets/df147bb8-70c9-47bd-945f-cf37685c2ea9)
+
+5.Fixing Incorrectly Implemented difftap.2 Rule
+
+The difftap.2 rule was improperly implemented, with no DRC violation for spacing < 0.42u.
+
+Screenshot of difftap rules:
+
+![difftap 2](https://github.com/user-attachments/assets/d9bde2af-03a0-46d6-9d4f-5f6669ecc7a8)
+
+Problem: No violation occurred for difftap spacing < 0.42u.
+
+![difftap error](https://github.com/user-attachments/assets/82625354-1267-45f5-bb10-6320d79d90ee)
+
+Solution: Update the Sky130 DRC tech file.
+
+Inserting New Commands into sky130A.tech File:
+
+![edited difftap 2](https://github.com/user-attachments/assets/04840728-0ba4-4b31-9dc6-94145be686e8)
+
+Commands to Run:
+
+```tcl
+# Load the updated tech file
+tech load sky130A.tech
+```
+```tcl
+# Run DRC check
+drc check
+
+```
+```tcl
+# Select region with errors and view messages
+drc why
+```
+
+Post-fix Screenshot:
+
+![difftap corrected](https://github.com/user-attachments/assets/ede865a5-c634-4b5f-8108-8af527ffc36b)
+
+6.Fixing Incorrectly Implemented nwell.4 Rule
+
+The nwell.4 rule, which enforces the presence of a tap within the nwell, was also improperly implemented.
+
+Screenshot of nwell rules:
+
+![nwell 4 rule](https://github.com/user-attachments/assets/55d3fec3-0227-44c0-a70b-73ca6ecf8131)
+
+Problem: No DRC violation occurred even though a tap was missing from the nwell.
+
+
+![nwell error](https://github.com/user-attachments/assets/ce14dc30-1fe4-4633-afa1-b433bdcd8efd)
+
+
+
+Solution: Update the Sky130 DRC tech file.
+
+Inserting New Commands into sky130A.tech File:
+
+![edited nwel 1](https://github.com/user-attachments/assets/65398b05-5cf4-4e76-9a49-200181c51eab)
+
+![edited nwel 2](https://github.com/user-attachments/assets/79c55f1a-65cd-4713-92df-df7be286a766)
+
+
+Commands to Run:
+
+```tcl
+# Load the updated tech file
+tech load sky130A.tech
+```
+
+```tcl
+# Change drc style to drc full
+drc style drc(full)
+```
+
+```tcl
+# Run DRC check
+drc check
+
+```
+```tcl
+# Select region with errors and view messages
+drc why
+```
+
+Post-fix Screenshot:
+
+![corrected nwell](https://github.com/user-attachments/assets/40f87039-fefe-46ed-8cbe-113875dc8314)
+
+
+## Section 4 - Pre-layout timing analysis and importance of good clock tree.
+
+### Implementation
+
+Objectives:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
