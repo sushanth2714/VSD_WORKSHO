@@ -1443,6 +1443,271 @@ Verifying the Replaced Instance\
 
 ### Task 11: Replace the old netlist with the updated netlist and implement floorplan, placement, and CTS.
 
+* After completing the timing ECO fixes, we proceed with replacing the old synthesis netlist with the newly optimized one. The following steps will guide you through the process of saving the old netlist, overwriting it with the updated netlist, and then running the Place and Route (PnR) flow, including floorplan, placement, and clock tree synthesis (CTS).
+
+Step 1: Back Up the Old Netlist
+
+Before overwriting the old netlist, we create a backup copy to preserve it for reference.
+
+Commands:
+
+```bash
+# Change from the home directory to the synthesis results directory
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/15-09_10-33/results/synthesis/
+```
+```bash
+# List the contents of the directory
+ls
+```
+```bash
+# Copy and rename the netlist
+cp picorv32a.synthesis.v picorv32a.synthesis_old.v
+```
+```bash
+# List the contents of the directory again to confirm the copy
+ls
+```
+Screenshot of Commands Run:
+
+![backup synthesis file](https://github.com/user-attachments/assets/53095fc5-f2a0-4ae7-9d34-39955343f401)
+
+
+Step 2: Overwrite the Synthesis Netlist with the Updated Version
+
+* The updated netlist generated after applying the timing ECO fixes is saved using the write_verilog command.
+
+Commands:
+
+```tcl
+# Check the syntax for write_verilog
+help write_verilog
+```
+```tcl
+# Overwrite the current synthesis netlist
+write_verilog /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/15-09_10-33/results/synthesis/picorv32a.synthesis.v
+```
+```tcl
+# Exit from OpenSTA as timing analysis is complete
+exit
+```
+
+Screenshot of Commands Run:
+
+![cta exit](https://github.com/user-attachments/assets/32856dd3-27d1-4e9e-8427-8b3b1d88aba2)
+
+
+Step 4: Run the Place and Route Flow (PnR)
+
+* After confirming that the netlist has been updated, we proceed with loading the design, re-prepping it, and running the necessary steps for floorplan, placement, and CTS.
+
+Commands to Load the Design and Run the Necessary Stages:
+
+```tcl
+# Prep the design to update the variables
+prep -design picorv32a -tag 24-03_10-03 -overwrite
+```
+```tcl
+# Include newly added LEF files to the OpenLane flow (merged.lef)
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+```
+```tcl
+# Set the new value for SYNTH_STRATEGY
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+```
+```tcl
+# Set the new value for SYNTH_SIZING
+set ::env(SYNTH_SIZING) 1
+```
+```tcl
+# Run synthesis
+run_synthesis
+```
+
+Floorplan, Placement, and CTS Commands:
+
+```tcl
+# Initialize floorplan, place I/O, and insert decap/tap cells
+init_floorplan
+place_io
+tap_decap_or
+```
+```tcl
+# Run placement
+run_placement
+```
+```tcl
+# In case of any errors, unset LIB_CTS environment variable
+unset ::env(LIB_CTS)
+```
+```tcl
+# Run Clock Tree Synthesis (CTS)
+run_cts
+```
+Screenshots of Commands Run:
+
+![day 4 task 11 synthesis](https://github.com/user-attachments/assets/e4d0a2ff-bc58-4192-adb5-1ad1dfb2c817)
+
+![task 11 2](https://github.com/user-attachments/assets/b88a46c0-85f3-4c15-9925-54ea2ac6bf31)
+
+![task 11 3](https://github.com/user-attachments/assets/99d231d2-8e25-46e6-970e-3894444057b3)
+
+
+### Task 12: Conduct post-CTS timing analysis using OpenROAD.
+
+* Once the Clock Tree Synthesis (CTS) is complete, we perform a timing analysis using the OpenROAD tool. This involves reading the necessary LEF/DEF files, netlist, and libraries, and generating a detailed timing report through integrated OpenSTA.
+
+Commands to Run OpenROAD Timing Analysis:
+
+```tcl
+# Launch OpenROAD tool
+openroad
+
+# Read the LEF file to define the physical layout of standard cells
+read_lef /openLANE_flow/designs/picorv32a/runs/24-03_10-03/tmp/merged.lef
+
+# Read the DEF file to get the design's placement data post-CTS
+read_def /openLANE_flow/designs/picorv32a/runs/15-09_10-33/results/cts/picorv32a.cts.def
+
+# Create an OpenROAD database (DB) for the design
+write_db pico_cts.db
+
+# Load the created DB back into OpenROAD
+read_db pico_cts.db
+
+# Read the post-CTS netlist
+read_verilog /openLANE_flow/designs/picorv32a/runs/15-09_10-33/results/synthesis/picorv32a.synthesis_cts.v
+
+# Read the Liberty file for the design (this defines cell delays, constraints, etc.)
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+
+# Link the design with the loaded library for analysis
+link_design picorv32a
+
+# Read in the custom SDC file with timing constraints
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+
+# Set all clocks as propagated clocks for timing analysis
+set_propagated_clock [all_clocks]
+
+# Check the syntax of the 'report_checks' command
+help report_checks
+
+# Generate a detailed timing report with specified fields
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+
+# Exit OpenROAD and return to OpenLANE
+exit
+
+```
+Screenshots of Commands Run and Timing Report Generated:
+
+![task 12 1](https://github.com/user-attachments/assets/178d176a-5acf-4738-8397-b15bddc82e7b)
+
+![task 12 2](https://github.com/user-attachments/assets/38174868-8615-445e-8d77-74f450b9f975)
+
+
+### Task 13: Optimize post-CTS timing by removing sky130_fd_sc_hd__clkbuf_1 from CTS_CLK_BUFFER_LIST.
+
+* This section explores the impact of removing the sky130_fd_sc_hd__clkbuf_1 cell from the CTS_CLK_BUFFER_LIST in the OpenLANE flow. By running Clock Tree Synthesis (CTS) with this modified buffer list, we analyze the changes in the timing characteristics.
+
+Commands to Modify and Run CTS:
+
+```tcl
+# Check current value of 'CTS_CLK_BUFFER_LIST'
+echo $::env(CTS_CLK_BUFFER_LIST)
+
+# Remove 'sky130_fd_sc_hd__clkbuf_1' from the list
+set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
+
+# Confirm the new value of 'CTS_CLK_BUFFER_LIST'
+echo $::env(CTS_CLK_BUFFER_LIST)
+
+# Check the current value of 'CURRENT_DEF'
+echo $::env(CURRENT_DEF)
+
+# Set the DEF file to the placement DEF
+set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/15-09_10-33/results/placement/picorv32a.placement.def
+
+# Re-run CTS with the updated buffer list
+run_cts
+
+# Confirm the new 'CTS_CLK_BUFFER_LIST'
+echo $::env(CTS_CLK_BUFFER_LIST)
+
+# Launch the OpenROAD tool for timing analysis
+openroad
+
+# Read the LEF file
+read_lef /openLANE_flow/designs/picorv32a/runs/15-09_10-33/tmp/merged.lef
+
+# Read the updated DEF file post-CTS
+read_def /openLANE_flow/designs/picorv32a/runs/15-09_10-33/results/cts/picorv32a.cts.def
+
+# Create a new OpenROAD database
+write_db pico_cts1.db
+
+# Load the database back into OpenROAD
+read_db pico_cts.db
+
+# Read the netlist post-CTS
+read_verilog /openLANE_flow/designs/picorv32a/runs/15-09_10-33/results/synthesis/picorv32a.synthesis_cts.v
+
+# Read the Liberty file for synthesis
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+
+# Link the design and library
+link_design picorv32a
+
+# Read the custom SDC file with timing constraints
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+
+# Set all clocks as propagated clocks for timing analysis
+set_propagated_clock [all_clocks]
+
+# Generate a detailed timing report
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+
+# Report hold skew
+report_clock_skew -hold
+
+# Report setup skew
+report_clock_skew -setup
+
+# Exit OpenROAD and return to OpenLANE
+exit
+
+```
+
+Screenshots of commands run and timing report generated:
+
+![running cts](https://github.com/user-attachments/assets/7f303eb1-eb8f-4dc6-8813-8326fd3b79c4)
+
+![task 13 2](https://github.com/user-attachments/assets/e31672e6-abd3-4385-8955-5c22fdf731b8)
+
+![task 13 3](https://github.com/user-attachments/assets/61a9dfb5-7153-41d5-aa39-3176cf68b080)
+
+![task 13 4](https://github.com/user-attachments/assets/50612b24-6081-4c5f-88ee-eb6a3f8bd6c3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
