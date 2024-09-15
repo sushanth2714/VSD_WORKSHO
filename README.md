@@ -1288,6 +1288,175 @@ Post-Synthesis Timing Improvement
   ![post sta 3](https://github.com/user-attachments/assets/c690ba5e-76df-47a5-8d7b-3ac059b72af2)
 
 
+### Task 10: Apply timing ECO fixes to resolve any timing violations.
+
+* In this section, we will discuss how to perform Timing ECO (Engineering Change Order) fixes to address timing violations in a design. The goal is to optimize the timing by replacing logic gates with higher drive strength versions and verify the results using timing analysis.
+
+* We are optimizing a design by replacing OR gates with higher drive strength versions to reduce slack violations. The design initially has a Worst Negative Slack (WNS) of -23.9000 ns, which we aim to improve through ECO fixes.
+
+
+OR Gate Driving 4 Fanouts
+
+  * In this case, an OR gate with drive strength 2 is driving 4 fanouts. We replace it with an OR gate of drive strength 4 to improve timing performance.
+
+    ![4 fanout](https://github.com/user-attachments/assets/0a3fdb5d-20b5-44f1-b324-f3943885f495)
+
+    Slack:
+    
+    ![slack 1](https://github.com/user-attachments/assets/cb6f6c27-740c-4904-b1f0-3c24c74c0f98)
+
+
+Command Sequence:
+
+```tcl
+# Reports all the connections to a specific net
+report_net -connections _11672_
+```
+```tcl
+# Checking command syntax for replacing cells
+help replace_cell
+```
+```tcl
+# Replacing the cell with a higher drive strength OR gate
+replace_cell _14510_ sky130_fd_sc_hd__or3_4
+```
+```tcl
+# Generating a custom timing report
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+
+Result:
+
+  * After replacing the cell, the slack was reduced. Below are the screenshots showing the improved timing:
+
+    ![fanout 4 result](https://github.com/user-attachments/assets/f3be9850-6e0b-4e0d-bcc2-1d9f77c8cc86)
+
+
+    ![slack 1 result](https://github.com/user-attachments/assets/86a1d11c-e815-435a-843f-c35cecf7f91c)
+
+
+ Further Optimization with Another OR Gate Replacement
+
+ * Similarly, another OR gate with drive strength 2 was driving 4 fanouts, leading to additional timing violations. Replacing it with an OR gate of drive strength 4 further improves the timing.
+
+
+   ![another fanout 4](https://github.com/user-attachments/assets/fc1953ac-abc3-4eaf-a196-43936fde87e9)
+
+   Slack:
+
+   ![slack 1 result](https://github.com/user-attachments/assets/86a1d11c-e815-435a-843f-c35cecf7f91c)
+
+
+    ```tcl
+    # Reports all the connections to a specific net
+    report_net -connections _11675_
+    ```
+    ```tcl
+    # Replacing the cell with a higher drive strength OR gate
+    replace_cell _14514_ sky130_fd_sc_hd__or3_4
+    ```
+    ```tcl
+    # Generating a custom timing report
+    report_checks -fields {net cap slew input_pins} -digits 4
+    ```
+
+Result:
+
+  * The slack was further reduced after this fix.
+
+    ![slack 2 result](https://github.com/user-attachments/assets/e5a1ab19-6a60-43eb-8e12-6a0e21ac2c7a)
+
+
+OR Gate Driving OA Gate with Increased Delay
+
+* An OR gate with drive strength 2 was driving an OA gate, leading to significant delay. We replace this OR gate with a higher drive strength version to optimize the design.
+
+  ![OA 1](https://github.com/user-attachments/assets/16066d4b-55f3-4c6e-a845-9f0080b70256)
+
+  Slack:
+
+   ![slack 2 result](https://github.com/user-attachments/assets/e5a1ab19-6a60-43eb-8e12-6a0e21ac2c7a)
+
+
+    ```tcl
+    # Reports all the connections to a specific net
+    report_net -connections _11643_
+    ```
+    ```tcl
+    # Replacing the cell with a higher drive strength OR gate
+    replace_cell _14481_ sky130_fd_sc_hd__or4_4
+    ```
+    ```tcl
+    # Generating a custom timing report
+    report_checks -fields {net cap slew input_pins} -digits 4
+    ```
+
+Result:
+
+  * The slack was further reduced after this fix.
+
+     ![slack 3 results](https://github.com/user-attachments/assets/2107644a-fbe9-44fc-9c45-8b5d89746362)
+
+OR Gate Driving OA Gate with Increased Delay
+
+* An OR gate with drive strength 2 was driving an OA gate, leading to significant delay. We replace this OR gate with a higher drive strength version to optimize the design.
+
+  ![OA 2](https://github.com/user-attachments/assets/3ab25754-2dc1-4f59-b7ee-82595684c332)
+
+
+  Slack:
+
+  ![slack 3 results](https://github.com/user-attachments/assets/2107644a-fbe9-44fc-9c45-8b5d89746362)
+
+
+   ```tcl
+    # Reports all the connections to a specific net
+    report_net -connections _11668_
+    ```
+    ```tcl
+    # Replacing the cell with a higher drive strength OR gate
+    replace_cell _14506_ sky130_fd_sc_hd__or4_4
+    ```
+    ```tcl
+    # Generating a custom timing report
+    report_checks -fields {net cap slew input_pins} -digits 4
+    ```
+
+Result:
+
+  * The slack was further reduced after this fix.
+
+    ![slack 4 results](https://github.com/user-attachments/assets/4b5e6435-ac40-43e5-ae4b-1602df8f6bef)
+
+Verifying the Replaced Instance\
+
+* To ensure that the instance _14506_ has been successfully replaced with sky130_fd_sc_hd__or4_4, we can run the following command:
+
+  ```tcl
+  # Verifying the replaced instance
+  report_checks -from _29043_ -to _30440_ -through _14506_
+  ```
+  
+  ![verifying slack](https://github.com/user-attachments/assets/5aa0f386-74a6-4063-ace5-49618617576c)
+
+
+
+### Task 11: Replace the old netlist with the updated netlist and implement floorplan, placement, and CTS.
+
+
+  
+
+
+  
+
+
+
+   
+
+
+
+    
+
 
 
 
