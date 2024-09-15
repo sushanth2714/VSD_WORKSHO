@@ -784,6 +784,210 @@ Post-fix Screenshot:
 
 Objectives:
 
+1.Fix minor DRC errors and verify the design for flow insertion.
+
+2.Save the finalized layout with a custom name and open for verification.
+
+3.Generate the LEF file from the layout.
+
+4.Copy the LEF and required library files to the 'picorv32a/src' directory.
+
+5.Edit config.tcl to update the library file and add the new LEF into OpenLane flow.
+
+6.Run OpenLane synthesis with the newly inserted custom inverter cell.
+
+7.Address any violations caused by the custom cell by adjusting design parameters.
+
+8.Run floorplanning and placement, verifying the custom cell's integration in the PnR flow.
+
+9.Perform post-synthesis timing analysis using the OpenSTA tool.
+
+10.Apply timing ECO fixes to resolve any timing violations.
+
+11.Replace the old netlist with the updated netlist and implement floorplan, placement, and CTS.
+
+12.Conduct post-CTS timing analysis using OpenROAD.
+
+13.Optimize post-CTS timing by removing sky130_fd_sc_hd__clkbuf_1 from CTS_CLK_BUFFER_LIST.
+
+
+
+### Task 1: Fix minor DRC errors and verify the design for flow insertion.
+
+Conditions to Verify:
+  1. Conditiion 1:
+    * Input and output ports must lie on the intersection of vertical and horizontal tracks.
+  2. Condition 2:
+    * The width of the standard cell should be an odd multiple of the horizontal track pitch.
+  3. Condition 3:
+     * The height of the standard cell should be an even multiple of the vertical track pitch.
+
+Commands to Open the Layout in Magic
+
+```bash
+# Change directory to the vsdstdcelldesign folder
+cd Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
+```
+
+```bash
+# Open the custom inverter layout in Magic
+magic -T sky130A.tech sky130_inv.mag &
+```
+
+Track Information of sky130_fd_sc_hd
+
+* The track information for the standard cell library sky130_fd_sc_hd is shown below. This will be used to verify the alignment and dimensions of the custom inverter cell.
+
+![track info](https://github.com/user-attachments/assets/22a83be2-21f6-439b-856d-4142d32dc7ec)
+
+Setting Grid for Track Alignment
+
+* Use the following commands in the tkcon window to set the grid according to the standard cell track pitch.
+
+```tcl
+# Get syntax for the grid command
+help grid
+```
+```tcl
+# Set grid values for track alignment (locali layer)
+grid 0.46um 0.34um 0.23um 0.17um
+```
+
+Screenshot of Command Execution
+
+![grid](https://github.com/user-attachments/assets/efea418d-51e0-4f8b-aa3f-f87e92cd1cb1)
+
+Condition 1: Port Alignment on Tracks
+
+* Verified that the input and output ports of the custom inverter cell are aligned at the intersections of vertical and horizontal tracks.
+
+![cond 1](https://github.com/user-attachments/assets/6901533f-ff0f-4375-bbac-0427bd499c0e)
+
+Condition 2: Width Verification
+* The width of the standard cell should be an odd multiple of the horizontal track pitch 0.46𝜇𝑚
+
+Horizontal track pitch=0.46 umWidth of standard cell=1.38 um=0.46×3
+
+This condition is satisfied as the width is an odd multiple.
+
+![con 2](https://github.com/user-attachments/assets/f81e8553-3b68-4ad2-8cf7-08c061ea1b73)
+
+Condition 3: Height Verification
+
+* The height of the standard cell should be an even multiple of the vertical track pitch 0.34𝜇𝑚
+
+Vertical track pitch=0.34 umHeight of standard cell=2.72 um=0.34×8
+
+This condition is satisfied as the height is an even multiple.
+
+![con 3](https://github.com/user-attachments/assets/6a261b54-ebd3-4af0-9496-1081579734e4)
+
+### Task 2: Save the finalized layout with a custom name and open for verification.
+
+* Once the layout has been verified and finalized, follow the steps below to save it with a custom name and reopen it for verification.
+
+Command to Save the Layout with a Custom Name in Magic (tkcon Window):
+
+```tcl
+# Command to save layout as a new file
+save sky130_vsdinv.mag
+```
+
+![changing  file name](https://github.com/user-attachments/assets/e46405b6-01da-41f2-b7f7-0c109efc2138)
+
+Command to Open the Newly Saved Layout in Magic:
+
+```bash
+# Open the custom inverter layout in Magic
+magic -T sky130A.tech sky130_vsdinv.mag &
+```
+
+Screenshot of the Newly Saved Layout:
+
+![newly created  file open](https://github.com/user-attachments/assets/5b72d7dd-0771-438d-8270-4c0021b5251b)
+
+
+### Task 3: Generate the LEF file from the layout.
+
+* After finalizing the custom inverter layout, you can generate the LEF (Library Exchange Format) file, which is essential for integrating the cell into the design flow.
+
+  Command to Write the LEF File in Magic (tkcon Window):
+
+  ```tcl
+  # Command to generate LEF
+  lef write
+  ```
+
+  Screenshot of the Command Execution:
+
+  ![lef write](https://github.com/user-attachments/assets/c6af18df-23b9-4c53-b0ae-825b43ac61b2)
+
+  Screenshot of the Newly Created LEF File:
+
+  ![lef file](https://github.com/user-attachments/assets/9e5906dc-d24a-4d27-8ad2-fe79a122956f)
+
+  
+
+### Task 4: Copy the LEF and required library files to the 'picorv32a/src' directory.
+
+* After generating the LEF file, the next step is to copy it along with the required library files to the picorv32a design's src directory for integration.
+
+  Commands to Copy LEF and Library Files:
+
+  ```bash
+  # Copy the LEF file to the 'picorv32a/src' directory
+  cp sky130_vsdinv.lef ~/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/
+  ```
+  ```bash
+  # List and check if the LEF file is copied successfully
+  ls ~/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/
+  ```
+  ```bash
+  # Copy the required Liberty (.lib) files
+  cp libs/sky130_fd_sc_hd__* ~/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/
+  ```
+  ```bash
+  # List and check if the .lib files are copied successfully
+  ls ~/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/
+  ```
+
+  Screenshot of Command Execution:
+
+  ![lef copy commands](https://github.com/user-attachments/assets/340e8c98-a708-44aa-aa58-d00f0e0130dd)
+
+
+### Task 5: Edit config.tcl to update the library file and add the new LEF into OpenLane flow.
+
+* To ensure that the custom inverter cell is included in the OpenLane flow, update the config.tcl file by specifying the correct library files and adding the new LEF file.
+
+Commands to Add to config.tcl:
+
+```tcl
+# Set the paths for the new library files
+set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__fast.lib"
+set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib"
+set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+
+# Include the custom LEF file
+set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]
+
+```
+Screenshot of the Edited config.tcl:
+
+![config file](https://github.com/user-attachments/assets/b5dbcc62-a81f-4741-a390-015ca6002a07)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
