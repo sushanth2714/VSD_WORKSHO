@@ -816,9 +816,9 @@ Objectives:
 
 Conditions to Verify:
   1. Conditiion 1:
-    * Input and output ports must lie on the intersection of vertical and horizontal tracks.
+     * Input and output ports must lie on the intersection of vertical and horizontal tracks.
   2. Condition 2:
-    * The width of the standard cell should be an odd multiple of the horizontal track pitch.
+     * The width of the standard cell should be an odd multiple of the horizontal track pitch.
   3. Condition 3:
      * The height of the standard cell should be an even multiple of the vertical track pitch.
 
@@ -976,6 +976,226 @@ set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/sr
 Screenshot of the Edited config.tcl:
 
 ![config file](https://github.com/user-attachments/assets/b5dbcc62-a81f-4741-a390-015ca6002a07)
+
+
+### Task 6: Run OpenLane synthesis with the newly inserted custom inverter cell.
+
+* To synthesize the design with the custom inverter cell included, follow the steps below.
+
+Commands to Run OpenLANE Flow Synthesis:
+
+```bash
+# Change directory to the OpenLANE flow working directory
+cd Desktop/work/tools/openlane_working_dir/openlane
+```
+```bash
+# Invoke the OpenLANE Docker subsystem
+docker
+```
+```tcl
+# Enter Interactive Mode in OpenLANE flow
+./flow.tcl -interactive
+
+```
+```tcl
+# Load required packages
+package require openlane 0.9
+```
+```tcl
+# Prepare the 'picorv32a' design
+prep -design picorv32a
+```
+```tcl
+# Include the newly added LEF file into the OpenLANE flow
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+```
+```tcl
+# Run synthesis for the design
+run_synthesis
+```
+
+Screenshots of Commands Execution:
+
+![day 4 synthesis 2](https://github.com/user-attachments/assets/ac6bdbc5-af28-4cde-bb56-a53240864032)
+
+### Task 7: Address any violations caused by the custom cell by adjusting design parameters.
+
+* After adding the custom inverter cell, the design may introduce timing violations. Here’s how to modify design parameters to improve timing.
+
+  Initial Design Values Before Modifications:
+
+  Screenshots of initial values:
+
+  ![initial vallues 1 before](https://github.com/user-attachments/assets/7e55c198-43ff-4f19-99cd-c1fbcd6e6e39)
+
+  ![initial vallues 2 before](https://github.com/user-attachments/assets/09a87bec-2b18-491f-8b16-8209b9fa1c8b)
+
+  Commands to Modify Parameters and Improve Timing:
+
+  ```tcl
+  # Prep the design again to update variables
+  prep -design picorv32a -tag 15-9_06-37 -overwrite
+  ```
+  ```tcl
+  # Include newly added lef into the flow
+  set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+  add_lefs -src $lefs
+  ```
+  ```tcl
+  # Display current value of SYNTH_STRATEGY
+  echo $::env(SYNTH_STRATEGY)
+  ```
+  ```tcl
+  # Set new value for SYNTH_STRATEGY
+  set ::env(SYNTH_STRATEGY) "DELAY 3"
+  ```
+  ```tcl
+  # Check if SYNTH_BUFFERING is enabled
+  echo $::env(SYNTH_BUFFERING)
+  ```
+  ```tcl
+  # Check current value of SYNTH_SIZING
+  echo $::env(SYNTH_SIZING)
+  ```
+  ```tcl
+  # Set new value for SYNTH_SIZING
+  set ::env(SYNTH_SIZING) 1
+
+  ```
+  ```tcl
+  # Check the current SYNTH_DRIVING_CELL
+  echo $::env(SYNTH_DRIVING_CELL)
+  ```
+  ```tcl
+  # Run synthesis again after updating parameters
+  run_synthesis
+  ```
+
+  Result of the Synthesis:
+
+  * Custom inverter cell is now included in the design.
+  * Screenshot of the merged.lef file in the tmp directory confirming the custom inverter as a macro:
+ 
+![merged lef file](https://github.com/user-attachments/assets/96770974-03d4-4b31-b8ac-ac8aee5482c4)
+
+
+Screenshots of Commands Execution:
+
+![day 4 synthesis 1 after](https://github.com/user-attachments/assets/42e2d30b-d502-4a5f-8a63-4f679e9efef0)
+
+![day 4 synthesis 2 after](https://github.com/user-attachments/assets/a9a4520e-881c-4bda-9d59-243b621f32f9)
+
+
+Comparing Results After Modifications:
+
+* Area: Increased slightly.
+* Worst Negative Slack: Improved, now at 0.
+
+  ![initial vallues 1 after](https://github.com/user-attachments/assets/583f2c89-4fb1-4f1c-ae57-a98d6864bca9)
+
+  ![initial vallues 2 after](https://github.com/user-attachments/assets/f14928c9-c8e3-4ddc-b220-3c87f910c545)
+
+
+### Task 8: Run floorplanning and placement, verifying the custom cell's integration in the PnR flow.
+
+* Once the custom inverter cell has been accepted during synthesis, we proceed with floorplanning and placement in the PnR flow.
+
+Floorplan Command
+Run the run_floorplan command:
+```tcl
+# Command to run floorplan
+run_floorplan
+```
+However, encountering errors while using this command led us to use the following individual commands to manually initiate the floorplan process:
+
+```tcl
+# Initialize floorplan
+init_floorplan
+```
+```tcl
+# Place I/O pins
+place_io
+```
+```tcl
+# Add tap and decap cells
+tap_decap_or
+```
+Floorplan Command Execution Screenshots:
+    * Running floorplan:
+    ![day 4 floorplan error](https://github.com/user-attachments/assets/75303d3c-4e67-4f99-9462-2b041033623d)
+    * Manually running the individual commands due to the error:
+    ![commands to clear floorplan error in day 4](https://github.com/user-attachments/assets/69d1fe8d-cd41-4c93-8c85-0b875cd41250)
+
+Placement Command
+*  Once the floorplan is complete, we proceed with placement using the following command:
+
+   ```tcl
+   # Command to run placement
+    run_placement
+   ```
+
+   Placement Command Execution Screenshots:
+
+   * Placement process:
+
+     ![day 4 placement done](https://github.com/user-attachments/assets/0cebb282-3b30-4e69-a9a7-821fb749f97e)
+
+
+  Load Placement DEF in Magic for Visualization
+  * To verify that the custom inverter cell has been accepted into the flow and placed correctly, we load the generated placement DEF into Magic.
+
+  ```bash
+  # Change directory to placement result folder
+  cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/15-9_06-37/results/placement/
+  ```
+  ```bash
+  # Load placement def in magic
+  magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+  ```
+Magic Visualization Screenshots:
+* Viewing the placement DEF in Magic:
+
+  ![day 4 magic open](https://github.com/user-attachments/assets/adac3418-f39b-4f83-b30a-44e48f0381ed)
+
+* Zooming in on the custom inverter with proper abutment:
+
+  ![zoom to inverter](https://github.com/user-attachments/assets/59240d31-63b6-4e61-8fc9-7da232da460d)
+
+View Internal Layers of Cells
+
+* We use the expand command in Magic to view internal connectivity layers of the placed cells, ensuring correct abutment.
+
+  ```tcl
+  # Command to view internal connectivity layers
+  expand
+  ```
+  Abutment Verification Screenshots:
+
+  * Custom inverter cell properly abutting power pins with other cells from the library:
+
+    ![expand](https://github.com/user-attachments/assets/d6c1abb5-09bc-492e-8331-927d6780b813)
+
+
+### Task 9: Perform post-synthesis timing analysis using the OpenSTA tool.
+
+
+
+
+    
+
+
+  
+
+
+
+    
+
+  
+
+
+
+
 
 
 
