@@ -1179,8 +1179,133 @@ View Internal Layers of Cells
 
 ### Task 9: Perform post-synthesis timing analysis using the OpenSTA tool.
 
+With synthesis completed and the custom inverter cell accepted, we move on to performing a timing analysis using the OpenSTA tool. The goal is to analyze the timing of the initial synthesis run, which had numerous violations before any timing improvements were made.
 
 
+Initial Synthesis and STA Setup
+
+  1.Run Synthesis Command:
+  * Navigate to the OpenLANE flow directory and run the synthesis with the following commands:
+
+  ```bash
+  cd Desktop/work/tools/openlane_working_dir/openlane
+  ```
+  ```bash
+  docker
+   ```
+  Inside the Docker container:
+      
+  ```tcl
+  ./flow.tcl -interactive
+  ```
+  ```tcl
+  package require openlane 0.9
+  ```
+  ```tcl
+  prep -design picorv32a
+  ```
+  ```tcl
+  set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+  add_lefs -src $lefs
+  ```
+  ```tcl
+  set ::env(SYNTH_SIZING) 1
+  ```
+  ```tcl
+  run_synthesis
+  ```
+      
+  Screenshots of Final Synthesis Command Run:
+      
+  ![day 4 task 9 synthesis](https://github.com/user-attachments/assets/0159c2fb-bd3e-40ed-8e88-ecbc23f0b87f)
+
+
+    
+2. Create STA Configuration Files:
+
+   * pre_sta.conf: STA configuration file located in the openlane directory.
+
+     ![sta file](https://github.com/user-attachments/assets/efefc18f-e883-419d-a390-f935b3dfbd5c)
+     
+
+   * my_base.sdc: SDC file for STA analysis, based on openlane/scripts/base.sdc, located in openlane/designs/picorv32a/src.
+
+     ![base file](https://github.com/user-attachments/assets/7a16d982-5684-422a-9cd4-dda7ce1df880)
+
+     
+3. Run STA Analysis:
+
+   Execute the STA analysis using OpenSTA tool:
+   ```bash
+   cd Desktop/work/tools/openlane_working_dir/openlane
+   ```
+   ```bash
+   sta pre_sta.conf
+   ```
+   Screenshots of STA Commands and Results:
+
+   ![sta exicution 1](https://github.com/user-attachments/assets/9c9f50a3-be4f-4002-83a4-f4ac6f1818c4)
+
+
+   ![sta exicution 2](https://github.com/user-attachments/assets/deb1a6fe-ee60-43a1-a00b-b207b31e7c74)
+
+
+   ![sta exicution 3](https://github.com/user-attachments/assets/5d21f5c1-2c1b-4aca-ab4d-5c543b1e5de1)
+
+
+   ![sta exicution 4](https://github.com/user-attachments/assets/0aa19bb6-7d98-493f-876d-34478263a654)
+
+
+   ![sta exicution 5](https://github.com/user-attachments/assets/a6462291-0fb6-4923-89fb-0c9ca1aaf001)
+
+
+   ![sta exicution 6](https://github.com/user-attachments/assets/c163c5b4-e095-4b53-a7f0-f9bea672f122)
+
+Post-Synthesis Timing Improvement
+
+  1.Adjust Parameters:
+
+  * Based on initial STA results indicating high fanout and delays, modify the synthesis parameters to reduce fanout and improve timing:
+
+      ![day 4 post synthesis](https://github.com/user-attachments/assets/9866a4be-441b-4ee5-9658-acfc9db68864)
+
+  2.Run STA Analysis Again:
+
+  * Re-run the STA analysis with the updated design:
+
+   ```bash
+   cd Desktop/work/tools/openlane_working_dir/openlane
+   ```
+   ```bash
+   sta pre_sta.conf
+   ```
+  Screenshots of STA Commands and Results after Adjustment:
+
+  ![post sta 1](https://github.com/user-attachments/assets/faff4153-cffe-4252-bbf4-7d83ab9f26b0)
+
+  ![post sta 2](https://github.com/user-attachments/assets/7177ea2a-bff3-4f47-ab03-1b248138af86)
+
+  ![post sta 3](https://github.com/user-attachments/assets/c690ba5e-76df-47a5-8d7b-3ac059b72af2)
+
+
+
+
+
+
+
+
+    
+
+
+
+   
+
+
+   
+
+
+
+    
 
     
 
