@@ -1702,9 +1702,7 @@ Objectives:
 
 2.Perform detailed routing using TritonRoute and explore the routed layout.
 
-3.Perform post-route parasitic extraction using SPEF extractor.
-
-4.Perform post-route OpenSTA timing analysis with the extracted parasitics of the route.
+3.Perform post-route OpenSTA timing analysis with the extracted parasitics of the route.
 
 
 
@@ -1850,20 +1848,8 @@ Screenshots of Routed Layout in Magic:
 ![routing 3](https://github.com/user-attachments/assets/d506a1a7-e826-47ed-8195-0acf28530a09)
 
 
-### Task 3: Perform post-route parasitic extraction using SPEF extractor.
 
-* To perform SPEF extraction, we used an external SPEF extractor tool:
-
-```bash
-# Change directory to SPEF extractor
-cd Desktop/work/tools/SPEF_EXTRACTOR
-```
-```bash
-# Command extract spef
-python3 main.py /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/16-09_06-34/tmp/merged.lef                                                            /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/16-09_06-34/results/routing/picorv32a.def
-```
-
-### Task 4: Perform post-route OpenSTA timing analysis with the extracted parasitics of the route.
+### Task 3: Perform post-route OpenSTA timing analysis with the extracted parasitics of the route.
 
 Using OpenSTA, we performed timing analysis with the parasitics included:
 
